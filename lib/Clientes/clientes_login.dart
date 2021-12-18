@@ -53,7 +53,7 @@ class clientes_loginState extends State<clientes_login> {
 
   @override
   void initState() {
-    getCurrentLocation();
+    //getCurrentLocation();
     // TODO: implement initState
     super.initState();
   }
