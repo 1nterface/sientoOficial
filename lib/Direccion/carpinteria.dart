@@ -1335,9 +1335,9 @@ class carpinteriaState extends State<carpinteria> {
                     onTap: () async{
 
                       documents["estadoc"] == "recoger"?
-                      await Navigator.push(context, MaterialPageRoute(builder: (context) => carpinteria_producto_detalle(cajas_modelo2("", documents["nombrecliente"], documents["estadoc"],documents["folio"], 2,2, 0,0, documents["concepto"], documents["estado3"], "Recoleccion", "tel", documents["newid"], 0.0, documents["latitud"], documents["longitud"], "empresa"))),)
+                      await Navigator.push(context, MaterialPageRoute(builder: (context) => carpinteria_producto_detalle(cajas_modelo2("", documents["nombrecliente"], documents["estadoc"],documents["folio"], 2,2, 0,0, documents["concepto"], documents["estado3"], "Recoleccion", "tel", documents["newid"], 0.0, 0.0, 0.0, "empresa"))),)
                       :
-                      await Navigator.push(context, MaterialPageRoute(builder: (context) => carpinteria_producto_detalle(cajas_modelo2("", documents["nombrecliente"], documents["estadoc"],documents["folio"], 2,2, 0,0, documents["concepto"], documents["estado3"], documents["calle"]+" #"+documents["numext"]+", "+documents["colonia"], "tel", documents["newid"], 0.0, documents["latitud"], documents["longitud"], "empresa"))),);
+                      await Navigator.push(context, MaterialPageRoute(builder: (context) => carpinteria_producto_detalle(cajas_modelo2("", documents["nombrecliente"], documents["estadoc"],documents["folio"], 2,2, 0,0, documents["concepto"], documents["estado3"], documents["calle"]+" #"+documents["numext"]+", "+documents["colonia"], "tel", documents["newid"], 0.0, 0.0, 0.0, "empresa"))),);
 
                       FirebaseFirestore.instance.collection('Pedidos_Jimena').doc(documents["newid"]).update({
                         'visto': 'si',
