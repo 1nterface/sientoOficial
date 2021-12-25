@@ -56,7 +56,6 @@ class alta_costos_cajaState extends State<alta_costos_caja> {
     });
   }
 
-
   Future uploadImageToFirebase(BuildContext context) async {
     String fileName = path.basename(_imageFile!.path);
     Reference firebaseStorageRef =

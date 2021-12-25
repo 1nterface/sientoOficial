@@ -41,10 +41,11 @@ import 'package:siento11/Panel/soporte.dart';
 import 'package:siento11/Panel/home_panel.dart';
 import 'package:siento11/Panel/alta_socios.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:url_strategy/url_strategy.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
+  setPathUrlStrategy();
   // Initialize a new Firebase App instance
   await Firebase.initializeApp();
   runApp(MyApp());
