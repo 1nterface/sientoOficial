@@ -50,7 +50,7 @@ class homeState extends State<home> with SingleTickerProviderStateMixin {
     comprasNotificaciones(context);
     //promosNotificaciones(context);
     // TODO: implement initState
-    controller = TabController(length: 3, vsync: this);
+    controller = TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -181,7 +181,7 @@ class homeState extends State<home> with SingleTickerProviderStateMixin {
             ),
             //Tab(icon: Icon(Icons.chat), text: "CHAT",),
             promosNotificaciones(context),
-            comprasNotificaciones(context),
+            //comprasNotificaciones(context),
           ],
         ),
       ),
@@ -191,7 +191,7 @@ class homeState extends State<home> with SingleTickerProviderStateMixin {
           //proveedor.Menu_Clientes2(),
           menu.menu_cliente(widget.product.nombreProducto, widget.product.nombreProveedor, widget.product.newid, widget.product.foto, widget.product.estado, widget.product.codigoDeBarra, widget.product.maximo, widget.product.minimo),
           ofertas.ofertas(),
-          compras.compras(),
+          //compras.compras(),
           //acreedores.Mis_Compras2(),
           //empleados.Pagos_Clientes(),
         ],

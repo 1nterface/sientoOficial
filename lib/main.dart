@@ -5,6 +5,7 @@ import 'package:location_permissions/location_permissions.dart';
 import 'package:siento11/Direccion/catalogo_mujeres.dart';
 import 'package:siento11/admin_inicio.dart';
 import 'package:siento11/Clientes/clientes_login.dart';
+import 'package:siento11/Clientes/menu_cliente.dart';
 import 'package:siento11/Clientes/home.dart';
 import 'package:siento11/Clientes/lista_restaurantes.dart';
 import 'package:siento11/Clientes/registro.dart';
@@ -42,6 +43,7 @@ import 'package:siento11/Panel/home_panel.dart';
 import 'package:siento11/Panel/alta_socios.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:url_strategy/url_strategy.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -110,7 +112,7 @@ class MyApp extends StatelessWidget {
       ),
       home:
       //Inicio(),
-      clientes_login(),
+      menu_cliente("","","","","","",0,0),
       // <--- App Clientes
 
 
