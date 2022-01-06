@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "503374868440",
+    "project_id": "siento-11-colectivo",
+    "storage_bucket": "siento-11-colectivo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503374868440:android:c4d68114031ff067b08cad",
+        "android_client_info": {
+          "package_name": "app.siento11colectivo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "503374868440-lkgdujd59gguhlkte2d6uf5aocstr3b7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa3lfSA1WSHPgWrQeKlt7dAavJv6LjK6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "503374868440-lkgdujd59gguhlkte2d6uf5aocstr3b7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
