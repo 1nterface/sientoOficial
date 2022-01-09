@@ -57,6 +57,7 @@ class registroState extends State<registro> {
         .then((result) {
       if (result == null) {
         Navigator.pop(context);
+        Navigator.pop(context);
       } else {
         print("");
       }

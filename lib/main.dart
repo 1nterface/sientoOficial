@@ -111,7 +111,8 @@ class MyApp extends StatelessWidget {
 
       ),
       home:
-      clientes_login(),
+      home(cajas_modelo("","","",0,0, 0, 0, 0, "", "", "", "", "", 0)),
+      //clientes_login(),
       //menu_cliente("","","","","","",0,0),
       // <--- App Clientes
 

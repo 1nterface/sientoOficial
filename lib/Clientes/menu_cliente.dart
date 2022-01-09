@@ -15,6 +15,7 @@ import 'package:siento11/Direccion/producto_detalle_zoom.dart';
 import 'package:siento11/Modelo/cajas_modelo.dart';
 import 'package:siento11/Modelo/nota_modelo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:siento11/authentication.dart';
 import 'package:toast/toast.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -37,6 +38,27 @@ class menu_clienteState extends State<menu_cliente> {
   CollectionReference reflistaextras = FirebaseFirestore.instance.collection('Extras');
   String? category, categorytalla, categorytacon;
   String? category2, category3;
+
+  bool sesion = false;
+
+  void correo () async {
+
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    if(FirebaseAuth.instance.currentUser?.email == null){
+// not logged
+      setState(() {
+        sesion = false;
+        print("Sin pestania $sesion");
+      });
+
+    } else {
+// logged
+      setState(() {
+        sesion = true;
+        print("Con pestania $sesion");
+      });
+    }
+  }
 
   Future<void> promoNotificacion (BuildContext)async{
     QuerySnapshot _myDoc = await FirebaseFirestore.instance.collection('Promociones').where('estado', isEqualTo: "sinver").get();
@@ -112,6 +134,15 @@ class menu_clienteState extends State<menu_cliente> {
 
           }
         }
+    );
+  }
+  Widget notificacionesCarrito2 (BuildContext context){
+    return FloatingActionButton(
+      onPressed: (){
+        _sheetCarrito(context);
+      },
+      backgroundColor: Color(0xff6DA08E),
+      child: Icon(Icons.add_shopping_cart, color: Colors.white),
     );
   }
 
@@ -383,16 +414,38 @@ class menu_clienteState extends State<menu_cliente> {
     await preferences.remove('totalProducto');
     await preferences.remove('sucursal');
   }
+  bool sesion2 = false;
+
+  void correoPestana () async {
+
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    if(FirebaseAuth.instance.currentUser?.email == null){
+// not logged
+      setState(() {
+        sesion2 = false;
+        print("Sin pestania $sesion");
+      });
+
+    } else {
+// logged
+      setState(() {
+        sesion2 = true;
+        print("Con pestania $sesion");
+      });
+    }
+  }
+
 
   @override
   void initState() {
+    correoPestana();
     print(widget.empresa);
     borrar(context);
     // TODO: implement initState
     //promoNotificacion(context);
-    comprasNotificacion(context);
     //comprasNotificacion(context);
-    notificacionesCarrito(context);
+    //comprasNotificacion(context);
+    //notificacionesCarrito(context);
     super.initState();
   }
 
@@ -441,6 +494,111 @@ class menu_clienteState extends State<menu_cliente> {
         );
       },
     );
+  }
+
+   TextEditingController _emailController = TextEditingController();
+   TextEditingController _passwordController = TextEditingController();
+  Future<void> inicioSesion() async {
+    // marked async
+    AuthenticationHelper()
+        .signIn(email: _emailController.text, password: _passwordController.text)
+        .then((result) {
+      if (result == null) {
+
+        Navigator.of(context).pop();
+
+        //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => home(cajas_modelo("","","",0,0,0,0,0,"","","","","",0))));
+        Toast.show("¡Has iniciado sesion!", context, duration: Toast.LENGTH_LONG, gravity:  Toast.CENTER);
+
+      } else {
+        Toast.show("Contraseña incorrecta!", context, duration: Toast.LENGTH_LONG, gravity:  Toast.CENTER);
+      }
+    });
+  }
+
+  void agregarACarrito(BuildContext context, String foto, String nombreProducto, double costo, String descripcion, String empresa, String categoriap, String newid, String codigo, int existencia) async {
+    int totale = 0;
+
+    //VA  ASER ESTE, HACERLO AL DESPERTAR, SUBIRLO RAPIDO Y COBRAR AL ALAN.
+    totale = existencia - _itemCount;
+
+    totale < 0?
+    _exitencia(context)
+        :
+    FirebaseFirestore.instance.collection('Cajas').doc(newid).update({
+      'existencia': totale,
+    });
+
+    setState(() {
+      notificacionesCarrito2(context);
+      notificacionesCarrito(context);
+    });
+
+    QuerySnapshot _myDoc = await FirebaseFirestore.instance.collection('Pedidos_Jimena').orderBy('folio').get();
+    List<DocumentSnapshot> _myDocCount = _myDoc.docs;
+
+    final collRef = FirebaseFirestore.instance.collection('Pedidos_Jimena_Interna');
+    DocumentReference docReference = collRef.doc();
+
+    var now = new DateTime.now();
+
+    //double precio = double.parse(_precio.text);
+
+    double resultado = _itemCount * costo;
+
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user2 = auth.currentUser;
+    final correoPersonal = user2!.email;
+
+    totale < 0?
+    _exitencia(context)
+        :
+    docReference.set({
+      'costo': costo,
+      'codigo': codigo,
+      //'tipo': tipo,
+      'correocliente': correoPersonal,
+      'descripcion': descripcion,
+      'totalProducto': resultado,
+      'cantidad': _itemCount,
+      'folio': _myDocCount.length+1,
+      'newid': docReference.id,
+      //'precioVenta': precio,
+      'foto': foto,
+      'id': "987",
+      'nombreProducto': nombreProducto,
+      'foto': foto,
+      'miembrodesde': DateFormat("dd-MM-yyyy").format(now),
+      'newidproducto': newid,
+    });
+    //countDocuments();
+    //Navigator.of(context).pop();
+    _cantidadDeProducto.clear();
+    totale < 0?
+    print("No hay tanto inventario")
+        :
+    Toast.show("¡Agregado exitosamente!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
+
+    Navigator.of(context).pop();
+
+    //BLOQUE DE CODIGO PARA NOTIFICACION PARA COMPRAS EN CARRITO
+    QuerySnapshot _myDocE = await FirebaseFirestore.instance.collection('Pedidos_Jimena_Interna').where('correocliente', isEqualTo: correoPersonal).where('folio', isEqualTo: _myDocCount.length+1).get();
+    List<DocumentSnapshot> _myDocCountE = _myDocE.docs;
+    //print('Weed: '+ _myDocCountE.length.toString() +1.toString());
+    var total = _myDocCountE.length;
+
+    FirebaseFirestore.instance.collection('Notificaciones').doc("Carrito"+correoPersonal.toString()).update({
+      'notificacion': total.toString(),
+      'correo': correoPersonal,
+    });
+
+    //AQUI VA UPDATE DE LA EXISTENCIA Y LA LOGICA
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.remove('totalProducto');
+
+    _itemCount = 1;
+
   }
 
   Widget _buildAboutDialog(BuildContext context, String foto, String nombreProducto, double costo, String descripcion, String empresa, String categoriap, String newid, String codigo, int existencia) {
@@ -599,88 +757,70 @@ class menu_clienteState extends State<menu_cliente> {
                               child: Text('Agregar a carrito', style: TextStyle(color: Colors.white),),
                               onPressed: () async {
 
-                                print("Cantidad: "+_itemCount.toString()+" Existencia: "+existencia.toString());
-                                int totale = 0;
-
-                                //VA  ASER ESTE, HACERLO AL DESPERTAR, SUBIRLO RAPIDO Y COBRAR AL ALAN.
-                                totale = existencia - _itemCount;
-
-                                totale < 0?
-                                _exitencia(context)
-                                :
-                                FirebaseFirestore.instance.collection('Cajas').doc(newid).update({
-                                  'existencia': totale,
-                                });
-
-                                setState(() {
-                                  notificacionesCarrito(context);
-                                });
-
-                                QuerySnapshot _myDoc = await FirebaseFirestore.instance.collection('Pedidos_Jimena').orderBy('folio').get();
-                                List<DocumentSnapshot> _myDocCount = _myDoc.docs;
-
-                                final collRef = FirebaseFirestore.instance.collection('Pedidos_Jimena_Interna');
-                                DocumentReference docReference = collRef.doc();
-
-                                var now = new DateTime.now();
-
-                                //double precio = double.parse(_precio.text);
-
-                                double resultado = _itemCount * costo;
-
                                 final FirebaseAuth auth = FirebaseAuth.instance;
-                                final User? user2 = auth.currentUser;
-                                final correoPersonal = user2!.email;
 
-                                totale < 0?
-                                _exitencia(context)
-                                    :
-                                docReference.set({
-                                  'costo': costo,
-                                  'codigo': codigo,
-                                  //'tipo': tipo,
-                                  'correocliente': correoPersonal,
-                                  'descripcion': descripcion,
-                                  'totalProducto': resultado,
-                                  'cantidad': _itemCount,
-                                  'folio': _myDocCount.length+1,
-                                  'newid': docReference.id,
-                                  //'precioVenta': precio,
-                                  'foto': foto,
-                                  'id': "987",
-                                  'nombreProducto': nombreProducto,
-                                  'foto': foto,
-                                  'miembrodesde': DateFormat("dd-MM-yyyy").format(now),
-                                  'newidproducto': newid,
-                                });
-                                //countDocuments();
-                                //Navigator.of(context).pop();
-                                _cantidadDeProducto.clear();
-                                totale < 0?
-                                    print("No hay tanto inventario")
-                                :
-                                Toast.show("¡Agregado exitosamente!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.CENTER);
+                                if(FirebaseAuth.instance.currentUser?.uid == null){
+                                // not logged
+                                  Alert(
+                                      context: context,
+                                      title: "Inicio de sesion",
+                                      content: Column(
+                                        children: <Widget>[
+                                          TextFormField(
+                                            controller: _emailController,
+                                            decoration: InputDecoration(
+                                              icon: Icon(Icons.account_circle, color: Color(0xff6DA08E)),
+                                              labelText: 'Correo',
+                                            ),
+                                          ),
+                                          TextFormField(
+                                            controller: _passwordController,
 
-                                Navigator.of(context).pop();
+                                            obscureText: true,
+                                            decoration: InputDecoration(
+                                              icon: Icon(Icons.lock, color: Color(0xff6DA08E)),
+                                              labelText: 'Contrasena',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      buttons: [
+                                        DialogButton(
+                                          onPressed: () {
 
-                                //BLOQUE DE CODIGO PARA NOTIFICACION PARA COMPRAS EN CARRITO
-                                QuerySnapshot _myDocE = await FirebaseFirestore.instance.collection('Pedidos_Jimena_Interna').where('correocliente', isEqualTo: correoPersonal).where('folio', isEqualTo: _myDocCount.length+1).get();
-                                List<DocumentSnapshot> _myDocCountE = _myDocE.docs;
-                                //print('Weed: '+ _myDocCountE.length.toString() +1.toString());
-                                print('hey');
-                                var total = _myDocCountE.length;
+                                            inicioSesion();
 
-                                FirebaseFirestore.instance.collection('Notificaciones').doc("Carrito"+correoPersonal.toString()).update({
-                                  'notificacion': total.toString(),
-                                  'correo': correoPersonal,
-                                });
+                                            setState(() {
+                                              sesion = true;
+                                            });
 
-                                //AQUI VA UPDATE DE LA EXISTENCIA Y LA LOGICA
+                                          },
+                                          child: Text(
+                                            "Entrar",
+                                            style: TextStyle(color: Colors.white, fontSize: 20),
+                                          ),
+                                          color: Color(0xff6DA08E),
 
-                                SharedPreferences preferences = await SharedPreferences.getInstance();
-                                await preferences.remove('totalProducto');
+                                        ),
+                                        DialogButton(
+                                          onPressed: () {
 
-                                _itemCount = 1;
+                                            Navigator.of(context).pushNamed('/registro');
+
+                                          },
+                                          child: Text(
+                                            "Registrarme",
+                                            style: TextStyle(color: Colors.white, fontSize: 20),
+                                          ),
+                                          color: Color(0xff6DA08E),
+                                        )
+                                      ]).show();
+                                } else {
+                              // logged
+                                  agregarACarrito(context, foto, nombreProducto, costo, descripcion, empresa, categoriap, newid, codigo, existencia);
+                                  print("Con pestania");
+
+                                }
 
                               },
                             ),
@@ -749,9 +889,12 @@ class menu_clienteState extends State<menu_cliente> {
         return value == true;
       },
       child: Scaffold(
-
-        floatingActionButton: notificacionesCarrito(context),
-        body: StreamBuilder(
+        floatingActionButton:
+        FirebaseAuth.instance.currentUser?.email == null?
+        notificacionesCarrito2(context)
+        :
+        notificacionesCarrito(context),
+          body: StreamBuilder(
             stream: reflistaproduccion.where('id', isEqualTo:  "978").orderBy('categoria', descending: false).orderBy('nombreProducto', descending: false).snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
               if (!snapshot.hasData) {

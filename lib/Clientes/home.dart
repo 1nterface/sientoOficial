@@ -41,21 +41,40 @@ class homeState extends State<home> with SingleTickerProviderStateMixin {
     FirebaseFirestore.instance.collection('Notificaciones').doc("Compras"+correoPersonal.toString()).set({'notificacion': total.toString()});
   }
 
+  void correo () async {
+
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    if(FirebaseAuth.instance.currentUser?.uid == null){
+// not logged
+      print("Sin pestania");
+    } else {
+// logged
+      print("Con pestania");
+
+    }
+  }
 
   @override
   void initState() {
 
+    correo();
     print("NOMBRE EMPRESA PARA PASAR A MENU CLIENTES: "+widget.product.nombreProducto);
 
-    comprasNotificaciones(context);
+    //comprasNotificaciones(context);
     //promosNotificaciones(context);
     // TODO: implement initState
-    controller = TabController(length: 2, vsync: this);
+    controller = TabController(length: 3, vsync: this);
     super.initState();
+  }
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+  signOut() async {
+    await auth.signOut();
   }
 
   @override
   void dispose() {
+    signOut();
     // TODO: implement dispose
     //signOut();
     controller.dispose();
@@ -109,6 +128,7 @@ class homeState extends State<home> with SingleTickerProviderStateMixin {
   }
 
   Widget comprasNotificaciones (BuildContext context){
+
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final correoPersonal = user!.email;
@@ -156,11 +176,18 @@ class homeState extends State<home> with SingleTickerProviderStateMixin {
     );
   }
 
-  var now = DateTime.now();
-  FirebaseAuth auth = FirebaseAuth.instance;
-  signOut() async {
-    await auth.signOut();
+  Widget comprasNotificaciones2 (BuildContext context){
+
+    return Column(
+      children: const [
+        Tab(icon: Icon(Icons.monetization_on, color: Colors.white,)),
+        Text("COMPRAS", style: TextStyle(color: Colors.white),),
+      ],
+    );
   }
+
+  var now = DateTime.now();
+
 
 
   @override
@@ -169,7 +196,50 @@ class homeState extends State<home> with SingleTickerProviderStateMixin {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Color(0xff6DA08E),
-        title: Text("Siento11 Colectivo", style: const TextStyle(color: Colors.white),),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text("Siento11 Colectivo", style: const TextStyle(color: Colors.white),),
+            InkWell(
+                onTap:(){
+
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      // return object of type Dialog
+                      return AlertDialog(
+                        title: Text('¿Deseas cerrar sesion?', style: TextStyle(color: Colors.black)),
+                        actions: <Widget>[
+
+
+
+                          FlatButton(
+                            onPressed: (){
+
+                              Navigator.of(context).pop();
+
+                            },
+                            child: Text('Cancelar'),
+                          ),
+                          // usually buttons at the bottom of the dialog
+                          FlatButton(
+                            child: Text("Si"),
+                            onPressed: () async {
+                              Navigator.of(context).pushNamedAndRemoveUntil('/clientes_login', (route) => false);
+                              signOut();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+
+                  //_tiempoRecorrido(context, documents["estado3"], documents["pendiente"], documents["transitopendiente"], documents["encamino"], documents["ensitio"], documents["finalizo"], documents["hora"]);
+                },
+              child: Icon(Icons.exit_to_app),
+            ),
+          ],
+        ),
         bottom: TabBar(
           controller: controller,
           tabs: <Widget>[
@@ -181,7 +251,10 @@ class homeState extends State<home> with SingleTickerProviderStateMixin {
             ),
             //Tab(icon: Icon(Icons.chat), text: "CHAT",),
             promosNotificaciones(context),
-            //comprasNotificaciones(context),
+            FirebaseAuth.instance.currentUser?.email == null?
+            comprasNotificaciones2(context)
+            :
+            comprasNotificaciones(context),
           ],
         ),
       ),
@@ -191,7 +264,7 @@ class homeState extends State<home> with SingleTickerProviderStateMixin {
           //proveedor.Menu_Clientes2(),
           menu.menu_cliente(widget.product.nombreProducto, widget.product.nombreProveedor, widget.product.newid, widget.product.foto, widget.product.estado, widget.product.codigoDeBarra, widget.product.maximo, widget.product.minimo),
           ofertas.ofertas(),
-          //compras.compras(),
+          compras.compras(),
           //acreedores.Mis_Compras2(),
           //empleados.Pagos_Clientes(),
         ],

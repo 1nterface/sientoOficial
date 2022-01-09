@@ -46,103 +46,81 @@ class como_quieres_pagarState extends State<como_quieres_pagar> {
 
   //METODO PARA CHECAR SI EL GPS ESTA PRENDIDO, SI NO, SALDRA UN MENSAJE PARA QUE LO ENCIENDAN Y CONTINUE LA COMPRA
   void checkServiceStatusEfectivo(BuildContext context) {
-    //LocationPermissions().checkServiceStatus().then(( serviceStatus) {
-
-      //OFICIAL
-      //
-      //AQUI ES DONDE TENGO QUE HACER LA CONDICION PARA QUE PRENDA EL GPS O CONTINUE CON LA ACCION
-      //print("Status real: "+serviceStatus.toString());
-      //serviceStatus.toString() == "ServiceStatus.disabled"?
-      //_ventanaFlotante(context)
-          //:
       terminarCompra(context);
 
-
-    //});
   }
 
   void checkServiceStatusTarjeta(BuildContext context) {
-    //LocationPermissions().checkServiceStatus().then(( serviceStatus) {
+    terminarCompraTar(context);
 
-      //OFICIAL
-      //
-      //AQUI ES DONDE TENGO QUE HACER LA CONDICION PARA QUE PRENDA EL GPS O CONTINUE CON LA ACCION
-      //print("Status real: "+serviceStatus.toString());
-      //serviceStatus.toString() == "ServiceStatus.disabled"?
-      //_ventanaFlotante(context)
-          //:
-      terminarCompraTar(context);
-
-
-    //});
   }
 
   //METODO PARA CHECAR SI EL GPS ESTA PRENDIDO, SI NO, SALDRA UN MENSAJE PARA QUE LO ENCIENDAN Y CONTINUE LA COMPRA
   void checkServiceStatusSolicitar(BuildContext context, LocationPermissionLevel permissionLevel) {
-    //LocationPermissions().checkServiceStatus().then(( serviceStatus) {
+    LocationPermissions().checkServiceStatus().then(( serviceStatus) {
 
       //OFICIAL
       //
       //AQUI ES DONDE TENGO QUE HACER LA CONDICION PARA QUE PRENDA EL GPS O CONTINUE CON LA ACCION
-      //print("Status real: "+serviceStatus.toString());
-      //serviceStatus.toString() == "ServiceStatus.disabled"?
-      //_ventanaFlotante(context)
-          //:
+      print("Status real: "+serviceStatus.toString());
+      serviceStatus.toString() == "ServiceStatus.disabled"?
+      _ventanaFlotante(context)
+          :
       terminarCompraTerminal(context);
 
 
-    //});
+    });
   }
 
   //METODO PARA CHECAR SI EL GPS ESTA PRENDIDO, SI NO, SALDRA UN MENSAJE PARA QUE LO ENCIENDAN Y CONTINUE LA COMPRA
   void checkServiceStatusPuntoPago(BuildContext context, LocationPermissionLevel permissionLevel) {
-    //LocationPermissions().checkServiceStatus().then(( serviceStatus) {
+    LocationPermissions().checkServiceStatus().then(( serviceStatus) {
 
       //OFICIAL
       //
       //AQUI ES DONDE TENGO QUE HACER LA CONDICION PARA QUE PRENDA EL GPS O CONTINUE CON LA ACCION
-      //print("Status real: "+serviceStatus.toString());
-      //serviceStatus.toString() == "ServiceStatus.disabled"?
-      //_ventanaFlotante(context)
-          //:
+      print("Status real: "+serviceStatus.toString());
+      serviceStatus.toString() == "ServiceStatus.disabled"?
+      _ventanaFlotante(context)
+          :
       terminarCompraOxxo(context);
 
 
-    //});
+    });
   }
 
   //METODO PARA CHECAR SI EL GPS ESTA PRENDIDO, SI NO, SALDRA UN MENSAJE PARA QUE LO ENCIENDAN Y CONTINUE LA COMPRA
   void checkServiceStatusTransferencia(BuildContext context, LocationPermissionLevel permissionLevel) {
-    //LocationPermissions().checkServiceStatus().then(( serviceStatus) {
+    LocationPermissions().checkServiceStatus().then(( serviceStatus) {
 
       //OFICIAL
       //
       //AQUI ES DONDE TENGO QUE HACER LA CONDICION PARA QUE PRENDA EL GPS O CONTINUE CON LA ACCION
-      //print("Status real: "+serviceStatus.toString());
-      //serviceStatus.toString() == "ServiceStatus.disabled"?
-      //_ventanaFlotante(context)
-          //:
+      print("Status real: "+serviceStatus.toString());
+      serviceStatus.toString() == "ServiceStatus.disabled"?
+      _ventanaFlotante(context)
+          :
       terminarCompraTransfer(context);
 
 
-    //});
+    });
   }
 
   //METODO PARA CHECAR SI EL GPS ESTA PRENDIDO, SI NO, SALDRA UN MENSAJE PARA QUE LO ENCIENDAN Y CONTINUE LA COMPRA
   void checkServiceStatusTarjetaDebito(BuildContext context) {
-    //LocationPermissions().checkServiceStatus().then(( serviceStatus) async {
+    LocationPermissions().checkServiceStatus().then(( serviceStatus) async {
 
       //OFICIAL
       //
       //AQUI ES DONDE TENGO QUE HACER LA CONDICION PARA QUE PRENDA EL GPS O CONTINUE CON LA ACCION
-      //print("Status real: "+serviceStatus.toString());
-      //serviceStatus.toString() == "ServiceStatus.disabled"?
-      //_ventanaFlotante(context)
-          //:
+      print("Status real: "+serviceStatus.toString());
+      serviceStatus.toString() == "ServiceStatus.disabled"?
+      _ventanaFlotante(context)
+          :
           print("pago con tarjeta segun");
       //await Navigator.push(context, MaterialPageRoute(builder: (context) => Pago_Con_Tarjeta2_Oficial(Nota_Modelo(null, "", 0,0,"","",widget.product.totalNota, "",0,0,"","",""))),);
 
-    //});
+    });
   }
 
   Widget comprasNotificaciones (BuildContext context){
@@ -330,9 +308,9 @@ class como_quieres_pagarState extends State<como_quieres_pagar> {
                     'concepto': "PAGO CON TARJERTA",
                     'estadoh': 'sinhornear',
                     'correoNegocio': correoNegocio,
-                    //'latitud': lat.toDouble(),
-                    //'longitud': lon.toDouble(),
-                    //'estadoefectivo': 'pagooxxo',
+                    'latitud': lat.toDouble(),
+                    'longitud': lon.toDouble(),
+                    'estadoefectivo': 'pagooxxo',
                     'estado3': 'PENDIENTE',
                     'correopersonal': correoPersonal,
                     'totalNota': totalreal,
@@ -498,8 +476,8 @@ class como_quieres_pagarState extends State<como_quieres_pagar> {
                     'concepto': "ENVIAR COMPROBANTE",
                     'estadoh': 'sinhornear',
                     'correoNegocio': correoNegocio,
-                    //'latitud': lat.toDouble(),
-                    //'longitud': lon.toDouble(),
+                    'latitud': lat.toDouble(),
+                    'longitud': lon.toDouble(),
                     'estadoefectivo': 'pagooxxo',
                     'estado3': 'PENDIENTE',
                     'correopersonal': correoPersonal,
@@ -671,8 +649,8 @@ class como_quieres_pagarState extends State<como_quieres_pagar> {
                     'concepto': "POR PAGAR CON TARJETA",
                     'estadoh': 'sinhornear',
                     'correoNegocio': correoNegocio,
-                    //'latitud': lat.toDouble(),
-                    //'longitud': lon.toDouble(),
+                    'latitud': lat.toDouble(),
+                    'longitud': lon.toDouble(),
                     'estadoefectivo': 'enefectivo',
                     'estado3': 'PENDIENTE',
                     'correopersonal': correoPersonal,
@@ -839,8 +817,8 @@ class como_quieres_pagarState extends State<como_quieres_pagar> {
                     'concepto': "Efectivo",
                     'estadoh': 'sinhornear',
                     'correoNegocio': correoNegocio,
-                    //'latitud': lat.toDouble(),
-                    //'longitud': lon.toDouble(),
+                    'latitud': lat.toDouble(),
+                    'longitud': lon.toDouble(),
                     'estadoefectivo': 'enefectivo',
                     'estado3': widget.product.formadepago=="[A Domicilio]"?'PEDIDO A DOMICILIO':'PEDIDO A RECOGER',
                     'correopersonal': correoPersonal,
@@ -1006,8 +984,8 @@ class como_quieres_pagarState extends State<como_quieres_pagar> {
                     'concepto': "Tarjeta de Debito",
                     'estadoh': 'sinhornear',
                     'correoNegocio': correoNegocio,
-                    //'latitud': lat.toDouble(),
-                    //'longitud': lon.toDouble(),
+                    'latitud': lat.toDouble(),
+                    'longitud': lon.toDouble(),
                     'estadoefectivo': 'contarjeta',
                     'estado3': widget.product.formadepago=="[A Domicilio]"?'PEDIDO A DOMICILIO':'PEDIDO A RECOGER',
                     'correopersonal': correoPersonal,

@@ -22,6 +22,8 @@ class compras extends StatefulWidget {
 
 class comprasState extends State<compras> {
 
+  bool sesion = false;
+
   CollectionReference reflistaproduccion = FirebaseFirestore.instance.collection('Pedidos_Jimena');
 
   Future<void> pedidos (BuildContext context)async{
@@ -55,6 +57,7 @@ class comprasState extends State<compras> {
 
   @override
   void initState() {
+    correo();
     // TODO: implement initState
     pedidos(context);
     super.initState();
@@ -1377,6 +1380,27 @@ class comprasState extends State<compras> {
       ),
     );
   }
+
+
+  void correo () async {
+
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    if(FirebaseAuth.instance.currentUser?.email == null){
+// not logged
+    setState(() {
+      sesion = false;
+      print("Sin pestania $sesion");
+    });
+
+    } else {
+// logged
+      setState(() {
+        sesion = true;
+        print("Con pestania $sesion");
+      });
+    }
+  }
+
   var tiempo, empresa, coloniaNegocio, calleNegocio;
   @override
   Widget build(BuildContext context) {
@@ -1416,7 +1440,11 @@ class comprasState extends State<compras> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               SizedBox(height: 20.0,),
-              listaPedidos(),
+
+              sesion == true?
+              listaPedidos()
+              :
+                  Container(),
               SizedBox(height: 20,)
             ],
           ),

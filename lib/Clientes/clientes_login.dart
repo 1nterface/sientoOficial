@@ -14,7 +14,6 @@ import 'package:siento11/authentication.dart';
 import 'package:siento11/Clientes/lista_restaurantes.dart';
 import 'package:toast/toast.dart';
 
-
 class clientes_login extends StatefulWidget {
 
   var data;
@@ -53,7 +52,7 @@ class clientes_loginState extends State<clientes_login> {
 
   @override
   void initState() {
-    //getCurrentLocation();
+    getCurrentLocation();
     // TODO: implement initState
     super.initState();
   }
@@ -104,40 +103,7 @@ class clientes_loginState extends State<clientes_login> {
       },
       child: Scaffold(
 
-        //floatingActionButton: SpeedDial( //Boton flotante animado,
-          //marginRight: 18,
-          //marginBottom: 30,
-        //animatedIcon: AnimatedIcons.home_menu,
-        //animatedIconTheme: IconThemeData(size: 25.0),
-          // this is ignored if animatedIcon is non null
-          // child: Icon(Icons.add),
-        //visible: true,
-        //curve: Curves.bounceIn,
-        //overlayColor: Colors.black,
-        //overlayOpacity: 0.5,
-        //onOpen: () => print('OPENING DIAL'),
-        //onClose: () => print('DIAL CLOSED'),
-        //tooltip: 'Speed Dial',
-        //heroTag: 'speed-dial-hero-tag',
-        //backgroundColor: Color(0xff6DA08E),
-        //foregroundColor: Colors.white,
-        //elevation: 1.0,
-        //shape: CircleBorder(),
-        //children: [
 
-        //SpeedDialChild(
-      //child: Icon(Icons.admin_panel_settings, color: Colors.white,),
-      //backgroundColor: Color(0xff6DA08E),
-      //label: 'Colectivo',
-    //onTap: () async {
-
-    //Navigator.of(context).pushNamed('/gerencia_login');
-
-    //}
-                //),
-
-        //],
-      //),
         appBar: AppBar(
             backgroundColor: Color(0xff6DA08E),
             centerTitle: true,
