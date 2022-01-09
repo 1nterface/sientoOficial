@@ -852,6 +852,8 @@ class menu_clienteState extends State<menu_cliente> {
                                             inicioSesion();
 
                                             setState(() {
+                                              comprasNotificaciones(context);
+                                              comprasNotificaciones2(context);
                                               sesion = true;
                                             });
 
