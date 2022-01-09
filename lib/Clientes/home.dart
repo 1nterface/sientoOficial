@@ -251,9 +251,7 @@ class homeState extends State<home> with SingleTickerProviderStateMixin {
             ),
             //Tab(icon: Icon(Icons.chat), text: "CHAT",),
             promosNotificaciones(context),
-            FirebaseAuth.instance.currentUser?.email == null?
-            comprasNotificaciones2(context)
-            :
+
             comprasNotificaciones(context),
           ],
         ),
