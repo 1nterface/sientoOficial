@@ -127,7 +127,7 @@ class homeState extends State<home> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget comprasNotificaciones (BuildContext context){
+  Widget comprasNotificaciones (BuildContext context) {
 
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
@@ -181,7 +181,7 @@ class homeState extends State<home> with SingleTickerProviderStateMixin {
     return Column(
       children: const [
         Tab(icon: Icon(Icons.monetization_on, color: Colors.white,)),
-        Text("COMPRAS", style: TextStyle(color: Colors.white),),
+        Text("COMPRASz", style: TextStyle(color: Colors.white),),
       ],
     );
   }
