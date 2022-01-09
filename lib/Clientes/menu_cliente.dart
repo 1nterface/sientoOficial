@@ -516,6 +516,65 @@ class menu_clienteState extends State<menu_cliente> {
     });
   }
 
+  Widget comprasNotificaciones (BuildContext context){
+
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final correoPersonal = user!.email;
+
+    return StreamBuilder<DocumentSnapshot<Object?>>(
+        stream: FirebaseFirestore.instance.collection('Notificaciones').doc("Compras"+correoPersonal.toString()).snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Text("Loading");
+          }
+          //reference.where("title", isEqualTo: 'UID').snapshots(),
+
+          else
+          {
+            Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+
+
+            return
+              data["notificacion"] == "0"?
+              Column(
+                children: const [
+                  Tab(icon: Icon(Icons.monetization_on, color: Colors.white,)),
+                  Text("COMPRAS", style: TextStyle(color: Colors.white),),
+                ],
+              )
+                  :
+              Badge(
+                position: BadgePosition(left: 40),
+                badgeColor: Colors.white,
+                badgeContent: Text(data["notificacion"], style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red), ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Column(
+                    children: [
+                      Tab(icon: Icon(Icons.monetization_on, color: Colors.white,)),
+                      Text("COMPRAS", style: TextStyle(color: Colors.white),),
+                    ],
+                  ),
+
+                ),
+              );
+
+          }
+        }
+    );
+  }
+
+  Widget comprasNotificaciones2 (BuildContext context){
+
+    return Column(
+      children: const [
+        Tab(icon: Icon(Icons.monetization_on, color: Colors.white,)),
+        Text("COMPRAS", style: TextStyle(color: Colors.white),),
+      ],
+    );
+  }
+
   void agregarACarrito(BuildContext context, String foto, String nombreProducto, double costo, String descripcion, String empresa, String categoriap, String newid, String codigo, int existencia) async {
     int totale = 0;
 
@@ -530,6 +589,8 @@ class menu_clienteState extends State<menu_cliente> {
     });
 
     setState(() {
+      comprasNotificaciones(context);
+      comprasNotificaciones2(context);
       notificacionesCarrito2(context);
       notificacionesCarrito(context);
     });
