@@ -686,18 +686,7 @@ class menu_clienteState extends State<menu_cliente> {
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0),
-                        child: Container(
-                          width: 230.0,
-                          height: 230.0,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(foto)
-                            ),
-                            //borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                            color: Colors.transparent,
-                          ),
-                        ),
+                        child: Image.network(foto)
                       ),
                     ),
                   ],
