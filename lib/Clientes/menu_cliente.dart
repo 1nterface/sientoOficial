@@ -849,6 +849,8 @@ class menu_clienteState extends State<menu_cliente> {
                                         DialogButton(
                                           onPressed: () {
 
+                                            initState();
+
                                             inicioSesion();
 
                                             setState(() {
